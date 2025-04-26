@@ -1,0 +1,178 @@
+# Archivos generados por VB6
+*.bat
+*.rar
+*.7zp
+*.zip
+*.vbw        # Archivos de workspace de VB6 (contienen configuraciones específicas del usuario)
+*.exe        # Archivos ejecutables generados
+*.dll        # Bibliotecas dinámicas generadas
+*.ocx        # Controles ActiveX generados
+*.frm~       # Archivos temporales de formularios
+*.bas~       # Archivos temporales de módulos
+*.cls~       # Archivos temporales de clases
+*.res        # Archivos de recursos generados
+*.log        # Archivos de registro generados
+*.tmp        # Archivos temporales generales
+*.diz
+*.htm
+*.sql  
+*.xls  
+*.xlsx  
+*.mp4
+
+
+### Archivos generados por el IDE y compilación ###
+*.pdb
+*.exe
+*.dll
+*.lib
+*.cache
+*.suo
+*.user
+*.vs/
+.vscode/
+*.ide
+*.ide-*
+*.tmp
+*.bak
+*.bkp
+*.log
+*.swp
+
+# Build results
+[Bb]in/
+[Oo]bj/
+*.apk
+*.ipa
+*.dll
+*.pdb
+*.mdb
+*.exe
+*.cache
+*.so
+
+# VS/MD/MAUI files
+*.user
+*.suo
+*.userprefs
+*.psess
+*.nupkg
+*.DotSettings
+
+# Android
+*.keystore
+*.dex
+*.aar
+*.ap_
+*.aab
+
+# iOS/macOS
+*.plist
+*.DS_Store
+*.app
+*.ipa
+*.p12
+*.mobileprovision
+
+### Dependencias y paquetes ###
+packages/
+node_modules/
+*.nupkg
+*.zip
+*.7z
+*.rar
+
+### Configuraciones sensibles y locales ###
+*.userprefs
+*.pubxml
+*.ps1
+*.p12
+*.pfx
+*.cer
+*.p7s
+*.rdl
+*.rdlc
+*.mdf
+*.ldf
+
+### Archivos de bases de datos y backups ###
+*.db
+*.sqlite
+*.sdf
+
+### Archivos multimedia/documentos no esenciales ###
+*.mp4
+*.jpeg
+*.psd
+*.pdf
+*.docx
+*.xlsx
+*.pptx
+*.msg
+
+### Archivos de proyecto temporales ###
+*.scc
+*.vspscc
+*.v2
+*.swp
+*.cache
+*.tmp
+
+### Otros archivos no necesarios ###
+*.DS_Store
+*.log
+*.log*
+thumbs.db
+
+# NuGet
+packages/*
+!packages/repositories.config
+.nuget/
+
+# Misc
+*.lock
+*.log
+*.tmp
+*.bak
+*.zip
+
+# Archivos de compilación
+/Debug/
+/Release/
+/Bin/
+/Obj/
+/build/
+
+# Archivos de configuración del entorno local
+*.ini       # Archivos de configuración locales
+*.cfg       # Archivos de configuración específicos del sistema
+*.ldb       # Archivos de bloqueo de bases de datos Access
+
+# Archivos del sistema operativo
+Thumbs.db    # Miniaturas generadas por Windows
+desktop.ini  # Configuración de carpetas en Windows
+*.lnk        # Accesos directos
+
+# Archivos de herramientas externas o IDE adicionales
+*.user       # Archivos de configuración de usuario de algunas herramientas
+*.suo        # Archivos de opciones de usuario de Visual Studio
+*.vs/        # Carpeta de configuración de Visual Studio
+
+# Archivos de versiones previas o respaldos
+*~           # Archivos de respaldo generados por algunos editores
+*.bak        # Archivos de copia de seguridad
+*.old        # Versiones antiguas de archivos
+
+# Dependencias externas
+/packages/   # Carpeta común para dependencias externas
+/lib/        # Carpeta común para bibliotecas externas
+
+# Archivos específicos del proyecto (personalizar según sea necesario)
+# Si tu proyecto tiene carpetas específicas para pruebas, documentación, etc., añádelas aquí.
+/TestResults/
+/Documentation/
+/truedblist 8/
+/scripts/
+/componentes/
+/excel/
+/packages/
