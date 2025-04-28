@@ -1,0 +1,235 @@
+Estimado Mario 
+
+Se adjunta el manual de instalación y ejecución del Proyecto XMLSUNATPROCESAR
+
+(Target Framework: net8.0)
+
+Requisitos Previos
+------------------
+1. SDK de .NET 8.0  
+   - Descargar e instalar desde: [https://dotnet.microsoft.com/download/dotnet/8.0](https://dotnet.microsoft.com/download/dotnet/8.0)  
+   - Verificar instalación:  
+
+     dotnet --version
+
+     Debe mostrar: 8.0.x.
+
+2. IDE o Editor de Código (opcional pero recomendado):  
+   - Visual Studio 2022 (Community/Professional)  
+   - VS Code con extensión C# y .NET Extension Pack.
+
+Pasos para Configurar el Proyecto
+---------------------------------
+Ejecutar en la raíz del proyecto (donde está el .csproj):
+dotnet restore
+
+Esto descarga los paquetes NuGet necesarios.
+
+Compilar el Proyecto
+dotnet build
+
+Ejecutar la Aplicación
+dotnet run
+
+
+Para Ejecutar el XmlSunatProcesar
+---------------------------------
+\XmlSunatProcesar\bin\Release\net8.0\win-x64>XmlSunatProcesar T020-4238.XML
+
+Se presentara el sgte mensaje :
+Proceso completado exitosamente. Archivo generado en: output.xml
+
+
+Estructura del Proyecto
+---------------------------------
+- Program.cs : Punto de entrada (contiene Main).  
+- appsettings.json : Configuraciones (opcional).  
+- bin/ y obj/ : Generados al compilar (no se versionan).  
+
+---
+
+Notas Finales
+- Si el proyecto usa Docker, incluir un Dockerfile y ejecutar:  
+  docker build -t my-dotnet-app .
+  docker run my-dotnet-app
+
+- Para generar un ejecutable autónomo:  
+  dotnet publish -c Release -r win-x64 (o linux-x64)
+
+------------------
+------------------
+
+Estas son los TAG usados en el archivo y en la cual la Sunat los aprueba o estan vigente en su manual
+
+ Resumen de Etiquetas XML para Documentos Electrónicos SUNAT
+
+ Estructura General
+ ----------------------------------------------------------------------
+ cbc:UBLVersionID              Versión UBL (ej. "2.1")  -
+ cbc:CustomizationID          Personalización SUNAT (ej. "2.0")  Obligatorio
+
+ Identificación del Documento
+ ----------------------------------------------------------------------
+ cbc:InvoiceTypeCode           Tipo de documento  Cat. 01: 01(Factura), 03(Boleta)
+ cbc:ID  Serie-número          F001-0001, B001-0001
+ cbc:IssueDate                  Fecha emisión  -
+ cbc:DocumentCurrencyCode     Moneda  Cat. 02: PEN, USD
+
+ Partes (Emisor/Receptor)
+ ----------------------------------------------------------------------
+ cbc:ID schemeID              Documento identidad  Cat. 06: 6(RUC)
+ cbc:RegistrationName        Razón social  
+
+ Ítems (Líneas de detalle)
+ ----------------------------------------------------------------------
+ cac:SellersItemIdentification/cbc:ID     Código interno  -
+ cbc:ItemClassificationCode                 Código SUNAT  Cat. 15/25 (UNSPSC)
+ cbc:PriceTypeCode                             Tipo de precio  Cat. 16
+
+ Tributos
+ ----------------------------------------------------------------------
+ cac:TaxScheme/cbc:ID               Tipo de impuesto  Cat. 05: 1000(IGV)
+ cbc:TaxExemptionReasonCode       Afectación IGV  Cat. 07: 10(Gravado)
+ cbc:TierRange                       Cálculo ISC  Cat. 08
+
+ Documentos Relacionados
+ ----------------------------------------------------------------------
+ cac:BillingReference               Notas a facturas/boletas  01, 03
+ cac:DespatchDocumentReference    Guías de remisión  09
+
+ Leyendas y Otros
+ ----------------------------------------------------------------------
+ cbc:Note languageLocaleID    Leyendas  Cat. 52: 1000(Monto en letras)
+ ds:Signature                    Firma digital  Obligatorio
+
+
+
+
+
+Lista de las etiquetas XML contenidas en el documento 
+
+Estructura General e Identificación del Documento Electrónico:
+
+1.  Tags UBL que identifican la versión y personalización:
+
+       `<cbc:UBLVersionID>`: Indica la versión del estándar UBL utilizada (ej. "2.1"). 
+       `<cbc:CustomizationID>`: Identifica la versión de la personalización de UBL definida por SUNAT (ej. "2.0"). Es obligatorio.
+
+2.  Tags UBL que identifican el documento específico:
+
+       `<cbc:InvoiceTypeCode>` (para Factura/Boleta) : Identifica el tipo de documento electrónico utilizando el Catálogo N.° 01: Código de tipo de documento. 
+	   Ejemplos de códigos del Catálogo 01 incluyen 01 (Factura), 03 (Boleta de venta), 07 (Nota de crédito), 08 (Nota de débito), 09 (Guía de remisión remitente).
+	   
+       `<cbc:ID>`: Identifica la Serie y el Número correlativo del comprobante principal (ej. Factura, Boleta, Nota). 
+	   Para facturas y notas de débito/crédito que modifican facturas, la serie debe iniciar con 'F' y ser alfanumérica de cuatro caracteres (ej. F001). 
+	   Para boletas y notas que modifican boletas, debe iniciar con 'B' (ej. B001). 
+	   El número correlativo varía. Este tag también se usa en otros documentos como Comunicación de Baja (`/VoidedDocuments/cbc:ID`) o Resumen Diario (`/SummaryDocuments/cbc:ID`), o en el Acuse de Recibo (`/ApplicationResponse/cbc:ID`).
+	   
+       `<cbc:IssueDate>`: Fecha de emisión del documento.
+       `<cbc:IssueTime>`: Hora de emisión del documento.
+       `<cbc:DocumentCurrencyCode>`: Código de la moneda en la que se emite el documento, utilizando el Catálogo N.° 02: Tipo de moneda.
+
+3.  Identificación de las Partes (Emisor y Receptor):
+
+       La información de las partes (emisor, adquirente/usuario) se encuentra dentro de estructuras como `<cac:AccountingSupplierParty>` y `<cac:AccountingCustomerParty>`.
+       `<cbc:ID schemeID="[código del catálogo 06]">` o `<cbc:CompanyID schemeID="[código del catálogo 06]">`: Identifica el número del documento de identidad (RUC, DNI, etc.). El atributo `@schemeID` indica el tipo de documento de identidad utilizando el Catálogo N.° 06: Documento de Identidad. El código '6' corresponde a RUC.
+       `<cbc:RegistrationName>` o `<cbc:Name>`: Nombre o razón social de la parte.
+
+4.  Identificación de los Ítems (Bienes o Servicios):
+       La información de cada ítem (línea de la factura/boleta/nota) se encuentra dentro de la estructura `<cac:InvoiceLine>` (o `<CreditNoteLine>`, `<DebitNoteLine>`).
+       `<cbc:Description>`: Descripción detallada del ítem.
+       `<cac:SellersItemIdentification>/cbc:ID`: Código de producto del ítem (código interno del vendedor).
+       `<cac:CommodityClassification>/cbc:ItemClassificationCode`: Código de producto SUNAT, que a menudo hace referencia al estándar UNSPSC. Se menciona el Catálogo N.° 15 y el Catálogo N.° 25 en relación con este código.
+       `<cac:AdditionalItemProperty>`: Permite agregar propiedades adicionales al ítem. Contiene:
+           `<cbc:Name>`: Nombre del concepto/propiedad adicional.
+           `<cbc:NameCode>`: Código del concepto/propiedad adicional, utilizando el Catálogo N.° 55: Código de propiedad del ítem.
+           `<cbc:Value>`: Valor de la propiedad adicional (ej. número de placa, categoría, marca, número de asiento, ciudad de origen/destino, número de documento/tipo/nombre del pasajero).
+       `<cac:Price>/cbc:PriceAmount`: Valor unitario del ítem. Atributo `@currencyID` usa Catálogo N.° 02.
+       `<cbc:PriceTypeCode>`: Código de tipo de precio, usando el Catálogo N.° 16: Código de tipo de precio de venta unitario.
+
+5.  Identificación de Tributos y Afectaciones:
+       La información de impuestos se encuentra dentro de estructuras como `<cac:TaxTotal>`, `<cac:TaxSubtotal>`, `<cac:TaxCategory>`, `<cac:TaxScheme>`.
+       `<cac:TaxScheme>/cbc:ID`: Código internacional del tributo (ej. IGV, ISC, etc.), utilizando el Catálogo N.° 05: Código internacional tributo. Códigos como 1000 (IGV), 2000 (ISC), 9996 (Gratuito), 9998 (Inafecto), 9995 (Otros conceptos de pago) son usados aquí.
+       `<cbc:TaxExemptionReasonCode>`: Código del tipo de afectación del IGV (Gravado, Exonerado, Inafecto), utilizando el Catálogo N.° 07: Código de tipo de afectación del IGV. En el fragmento `fac001-001_xml.pdf`, el valor `10` aparece en este tag, indicando el tipo de afectación.
+       `<cbc:TierRange>`: Código del tipo de sistema de cálculo del ISC, utilizando el Catálogo N.° 08: Códigos de Tipos de Sistema de Cálculo del ISC.
+
+6.  Referencias a Documentos Relacionados:
+       Documento que se modifica (en Notas de Crédito/Débito):
+           `<cac:BillingReference>` contiene la referencia al documento modificado.
+           `<cbc:ReferenceID>`: Identifica la serie y número del documento modificado (Factura o Boleta).
+           `<cbc:DocumentTypeCode>`: Identifica el tipo de documento modificado (01 para Factura, 03 para Boleta, etc.), utilizando el Catálogo N.° 01.
+       Guías de Remisión Relacionadas:
+           `<cac:DespatchDocumentReference>` contiene la referencia a la guía de remisión.
+           `<cbc:ID>`: Número de la guía de remisión (Serie-Número).
+           `<cbc:DocumentTypeCode>`: Código del tipo de documento (09 para Guía de remisión remitente), utilizando el Catálogo N.° 01.
+       Otros Documentos Relacionados:
+           `<cac:AdditionalDocumentReference>` contiene la referencia a otros documentos.
+           `<cbc:ID>`: Número del documento relacionado.
+           `<cbc:DocumentTypeCode>`: Código del tipo de documento relacionado, utilizando el Catálogo N.° 12: Código de documentos relacionados tributarios.
+
+7.  Leyendas:
+       `<cbc:Note languageLocaleID="[código del catálogo 52]">`: Campo para incluir leyendas o mensajes adicionales en el documento. El atributo `@languageLocaleID` identifica el tipo de leyenda utilizando el Catálogo N.° 52: Código de leyenda. Ejemplos de códigos: 1000 (Monto en letras), 1002 ("TRANSFERENCIA GRATUITA..."), 2000 ("COMPROBANTE DE PERCEPCIÓN").
+
+8.  Información de Traslado (en Guías de Remisión o facturas con traslado):
+       Dentro de `<cac:Delivery>/cac:Shipment`:
+           `<cbc:HandlingCode>`: Código del motivo de traslado, usando el Catálogo N.° 20: Código de motivo de traslado.
+           `<cbc:GrossWeightMeasure unitCode="...">`: Peso bruto total, usando el Catálogo N.° 03: Código de unidad de medida para el atributo `@unitCode`.
+       También se usan tags para identificar al transportista, vehículo, etc..
+
+9.  Otros Identificadores:
+       `<cbc:ProfileID>`: Código de tipo de operación, utilizando el Catálogo N.° 51: Código de tipo de operación.
+       `<cbc:ID schemeID="...">` dentro de `<cac:Delivery>`: Número de medidor (Servicios públicos) con `@schemeID` utilizando el Catálogo N.° 58: Código del tipo de medidor.
+
+10. Firma Digital:
+       `<ds:Signature>` o `<cac:Signature>`: Contiene la información de la firma digital, que permite identificar al emisor (signatario). Es obligatorio.
+
+11. Nomenclatura del Archivo:
+       SUNAT también establece una nomenclatura específica para los nombres de los archivos XML y ZIP que contienen los documentos electrónicos. Este nombre incluye identificadores clave: RUC del emisor + Código de tipo de documento (Catálogo N.° 01) + Serie + Número correlativo, separados por guiones. Para Resúmenes Diarios y Comunicaciones de Baja, la estructura es diferente pero también incorpora RUC, tipo de documento (RC o RR), fecha y correlativo.
+
+
+
+
+ Resumen de Etiquetas XML para Documentos Electrónicos SUNAT
+
+ Estructura General
+ ----------------------------------------------------------------------
+ cbc:UBLVersionID  			Versión UBL (ej. "2.1")  - 
+ cbc:CustomizationID  		Personalización SUNAT (ej. "2.0")  Obligatorio 
+
+ Identificación del Documento
+ ----------------------------------------------------------------------
+ cbc:InvoiceTypeCode  		Tipo de documento  Cat. 01: 01(Factura), 03(Boleta) 
+ cbc:ID  Serie-número  		F001-0001, B001-0001 
+ cbc:IssueDate  			Fecha emisión  - 
+ cbc:DocumentCurrencyCode  	Moneda  Cat. 02: PEN, USD 
+
+ Partes (Emisor/Receptor)
+ ----------------------------------------------------------------------
+ cbc:ID schemeID  			Documento identidad  Cat. 06: 6(RUC) 
+ cbc:RegistrationName  		Razón social   
+
+ Ítems (Líneas de detalle)
+ ----------------------------------------------------------------------
+ cac:SellersItemIdentification/cbc:ID  	Código interno  - 
+ cbc:ItemClassificationCode  			Código SUNAT  Cat. 15/25 (UNSPSC) 
+ cbc:PriceTypeCode  					Tipo de precio  Cat. 16 
+
+ Tributos
+ ----------------------------------------------------------------------
+ cac:TaxScheme/cbc:ID  			Tipo de impuesto  Cat. 05: 1000(IGV) 
+ cbc:TaxExemptionReasonCode  	Afectación IGV  Cat. 07: 10(Gravado) 
+ cbc:TierRange  				Cálculo ISC  Cat. 08 
+
+ Documentos Relacionados
+ ----------------------------------------------------------------------
+ cac:BillingReference  			Notas a facturas/boletas  01, 03 
+ cac:DespatchDocumentReference  Guías de remisión  09 
+
+ Leyendas y Otros
+ ----------------------------------------------------------------------
+ cbc:Note languageLocaleID  	Leyendas  Cat. 52: 1000(Monto en letras) 
+ ds:Signature  					Firma digital  Obligatorio 
+
+
+
+
