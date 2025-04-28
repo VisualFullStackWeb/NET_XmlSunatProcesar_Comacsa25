@@ -2,6 +2,7 @@
 using System.Xml;
 using System.IO;
 using System.Text;
+using System.Collections.Generic;
 
 namespace Program
 {
@@ -119,12 +120,23 @@ namespace Program
         {
             // Buscar entre "<cbc:PartyIdentification " y "<cbc:PartyIdentification>"
             // En el ejemplo, parece que el tipo está en el atributo schemeID
-            XmlNode node = xmlDoc.SelectSingleNode("//cac:AccountingCustomerParty//cac:PartyIdentification/cbc:ID", nsManager);
-            if (node != null && node.Attributes != null && node.Attributes["schemeID"] != null)
+            // XmlNode node = xmlDoc.SelectSingleNode("//cac:AccountingCustomerParty//cac:PartyIdentification/cbc:ID", nsManager);
+            // if (node != null && node.Attributes != null && node.Attributes["schemeID"] != null)
+            // {
+            //    return node.Attributes["schemeID"].Value;
+            // }
+            // return string.Empty;
+
+
+            // < cbc:InvoiceTypeCode > atributo listID Valor = "1001"
+
+            XmlNode node = xmlDoc.SelectSingleNode("//cbc:InvoiceTypeCode", nsManager);
+            if (node != null && node.Attributes != null && node.Attributes["listID"] != null)
             {
-                return node.Attributes["schemeID"].Value;
+                return node.Attributes["listID"].Value;
             }
             return string.Empty;
+
         }
 
         static string ExtractNumeroDocldReceptor(XmlDocument xmlDoc, XmlNamespaceManager nsManager)
